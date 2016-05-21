@@ -22,8 +22,9 @@ import re
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
+from mailman.database.types import SAUnicode
 from mailman.interfaces.bans import IBan, IBanManager
-from sqlalchemy import Column, Integer, Unicode
+from sqlalchemy import Column, Integer
 from zope.interface import implementer
 
 
@@ -35,8 +36,8 @@ class Ban(Model):
     __tablename__ = 'ban'
 
     id = Column(Integer, primary_key=True)
-    email = Column(Unicode, index=True)
-    list_id = Column(Unicode, index=True)
+    email = Column(SAUnicode, index=True)
+    list_id = Column(SAUnicode, index=True)
 
     def __init__(self, email, list_id):
         super().__init__()

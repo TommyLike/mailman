@@ -23,7 +23,7 @@ from mailman import public
 from mailman.config import config
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import Enum
+from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.action import Action, FilterAction
 from mailman.interfaces.address import IAddress
 from mailman.interfaces.archiver import ArchivePolicy
@@ -51,7 +51,7 @@ from mailman.utilities.filesystem import makedirs
 from mailman.utilities.string import expand
 from sqlalchemy import (
     Boolean, Column, DateTime, Float, ForeignKey, Integer, Interval,
-    LargeBinary, PickleType, Unicode)
+    LargeBinary, PickleType)
 from sqlalchemy.event import listen
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
@@ -78,9 +78,9 @@ class MailingList(Model):
     # are currently missing.
 
     # List identity
-    list_name = Column(Unicode, index=True)
-    mail_host = Column(Unicode, index=True)
-    _list_id = Column('list_id', Unicode, index=True, unique=True)
+    list_name = Column(SAUnicode, index=True)
+    mail_host = Column(SAUnicode, index=True)
+    _list_id = Column('list_id', SAUnicode, index=True, unique=True)
     allow_list_posts = Column(Boolean)
     include_rfc2369_headers = Column(Boolean)
     advertised = Column(Boolean)
@@ -106,11 +106,11 @@ class MailingList(Model):
     # Automatic responses.
     autoresponse_grace_period = Column(Interval)
     autorespond_owner = Column(Enum(ResponseAction))
-    autoresponse_owner_text = Column(Unicode)
+    autoresponse_owner_text = Column(SAUnicode)
     autorespond_postings = Column(Enum(ResponseAction))
-    autoresponse_postings_text = Column(Unicode)
+    autoresponse_postings_text = Column(SAUnicode)
     autorespond_requests = Column(Enum(ResponseAction))
-    autoresponse_request_text = Column(Unicode)
+    autoresponse_request_text = Column(SAUnicode)
     # Content filters.
     filter_action = Column(Enum(FilterAction))
     filter_content = Column(Boolean)
@@ -118,7 +118,7 @@ class MailingList(Model):
     convert_html_to_plaintext = Column(Boolean)
     # Bounces.
     bounce_info_stale_after = Column(Interval)                   # XXX
-    bounce_matching_headers = Column(Unicode)                    # XXX
+    bounce_matching_headers = Column(SAUnicode)                    # XXX
     bounce_notify_owner_on_disable = Column(Boolean)             # XXX
     bounce_notify_owner_on_removal = Column(Boolean)             # XXX
     bounce_score_threshold = Column(Integer)                     # XXX
@@ -130,7 +130,7 @@ class MailingList(Model):
     # Miscellaneous
     default_member_action = Column(Enum(Action))
     default_nonmember_action = Column(Enum(Action))
-    description = Column(Unicode)
+    description = Column(SAUnicode)
     digests_enabled = Column(Boolean)
     digest_is_default = Column(Boolean)
     digest_send_periodic = Column(Boolean)
@@ -144,36 +144,36 @@ class MailingList(Model):
     gateway_to_mail = Column(Boolean)
     gateway_to_news = Column(Boolean)
     hold_these_nonmembers = Column(PickleType)
-    info = Column(Unicode)
-    linked_newsgroup = Column(Unicode)
+    info = Column(SAUnicode)
+    linked_newsgroup = Column(SAUnicode)
     max_days_to_hold = Column(Integer)
     max_message_size = Column(Integer)
     max_num_recipients = Column(Integer)
-    member_moderation_notice = Column(Unicode)
+    member_moderation_notice = Column(SAUnicode)
     mime_is_default_digest = Column(Boolean)
     # FIXME: There should be no moderator_password
     moderator_password = Column(LargeBinary)             # TODO : was RawStr()
     newsgroup_moderation = Column(Enum(NewsgroupModeration))
     nntp_prefix_subject_too = Column(Boolean)
-    nonmember_rejection_notice = Column(Unicode)
+    nonmember_rejection_notice = Column(SAUnicode)
     obscure_addresses = Column(Boolean)
-    owner_chain = Column(Unicode)
-    owner_pipeline = Column(Unicode)
+    owner_chain = Column(SAUnicode)
+    owner_pipeline = Column(SAUnicode)
     personalize = Column(Enum(Personalization))
     post_id = Column(Integer)
-    posting_chain = Column(Unicode)
-    posting_pipeline = Column(Unicode)
-    _preferred_language = Column('preferred_language', Unicode)
-    display_name = Column(Unicode)
+    posting_chain = Column(SAUnicode)
+    posting_pipeline = Column(SAUnicode)
+    _preferred_language = Column('preferred_language', SAUnicode)
+    display_name = Column(SAUnicode)
     reject_these_nonmembers = Column(PickleType)
     reply_goes_to_list = Column(Enum(ReplyToMunging))
-    reply_to_address = Column(Unicode)
+    reply_to_address = Column(SAUnicode)
     require_explicit_destination = Column(Boolean)
     respond_to_post_requests = Column(Boolean)
     scrub_nondigest = Column(Boolean)
     send_goodbye_message = Column(Boolean)
     send_welcome_message = Column(Boolean)
-    subject_prefix = Column(Unicode)
+    subject_prefix = Column(SAUnicode)
     subscription_policy = Column(Enum(SubscriptionPolicy))
     topics = Column(PickleType)
     topics_bodylines_limit = Column(Integer)
@@ -487,7 +487,7 @@ class AcceptableAlias(Model):
         Integer, ForeignKey('mailinglist.id'),
         index=True, nullable=False)
     mailing_list = relationship('MailingList', backref='acceptablealias')
-    alias = Column(Unicode, index=True, nullable=False)
+    alias = Column(SAUnicode, index=True, nullable=False)
 
     def __init__(self, mailing_list, alias):
         super().__init__()
@@ -545,7 +545,7 @@ class ListArchiver(Model):
         index=True, nullable=False)
     mailing_list = relationship('MailingList')
 
-    name = Column(Unicode, nullable=False)
+    name = Column(SAUnicode, nullable=False)
     _is_enabled = Column(Boolean)
 
     def __init__(self, mailing_list, archiver_name, system_archiver):
@@ -617,9 +617,9 @@ class HeaderMatch(Model):
         index=True, nullable=False)
 
     _position = Column('position', Integer, index=True, default=0)
-    header = Column(Unicode)
-    pattern = Column(Unicode)
-    chain = Column(Unicode, nullable=True)
+    header = Column(SAUnicode)
+    pattern = Column(SAUnicode)
+    chain = Column(SAUnicode, nullable=True)
 
     def __init__(self, **kw):
         position = kw.pop('position', None)

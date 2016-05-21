@@ -24,11 +24,12 @@ from mailman import public
 from mailman.config import config
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
+from mailman.database.types import SAUnicode
 from mailman.interfaces.pending import (
     IPendable, IPended, IPendedKeyValue, IPendings)
 from mailman.utilities.datetime import now
 from mailman.utilities.uid import TokenFactory
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Unicode, and_
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, and_
 from sqlalchemy.orm import aliased, relationship
 from zope.interface import implementer
 from zope.interface.verify import verifyObject
@@ -45,8 +46,8 @@ class PendedKeyValue(Model):
     __tablename__ = 'pendedkeyvalue'
 
     id = Column(Integer, primary_key=True)
-    key = Column(Unicode, index=True)
-    value = Column(Unicode, index=True)
+    key = Column(SAUnicode, index=True)
+    value = Column(SAUnicode, index=True)
     pended_id = Column(Integer, ForeignKey('pended.id'), index=True)
 
     def __init__(self, key, value):
@@ -62,7 +63,7 @@ class Pended(Model):
     __tablename__ = 'pended'
 
     id = Column(Integer, primary_key=True)
-    token = Column(Unicode, index=True)
+    token = Column(SAUnicode, index=True)
     expiration_date = Column(DateTime, index=True)
     key_values = relationship('PendedKeyValue', cascade="all, delete-orphan")
 

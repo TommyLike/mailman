@@ -20,8 +20,9 @@
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
+from mailman.database.types import SAUnicode
 from mailman.interfaces.messages import IMessage
-from sqlalchemy import Column, Integer, Unicode
+from sqlalchemy import Column, Integer
 from zope.interface import implementer
 
 
@@ -34,9 +35,9 @@ class Message(Model):
 
     id = Column(Integer, primary_key=True)
     # This is a Messge-ID field representation, not a database row id.
-    message_id = Column(Unicode)
-    message_id_hash = Column(Unicode)
-    path = Column(Unicode)
+    message_id = Column(SAUnicode)
+    message_id_hash = Column(SAUnicode)
+    path = Column(SAUnicode)
 
     @dbconnection
     def __init__(self, store, message_id, message_id_hash, path):

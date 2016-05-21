@@ -20,13 +20,14 @@
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
+from mailman.database.types import SAUnicode
 from mailman.interfaces.domain import (
     BadDomainSpecificationError, DomainCreatedEvent, DomainCreatingEvent,
     DomainDeletedEvent, DomainDeletingEvent, IDomain, IDomainManager)
 from mailman.interfaces.user import IUser
 from mailman.interfaces.usermanager import IUserManager
 from mailman.model.mailinglist import MailingList
-from sqlalchemy import Column, Integer, Unicode
+from sqlalchemy import Column, Integer
 from sqlalchemy.orm import relationship
 from zope.component import getUtility
 from zope.event import notify
@@ -42,8 +43,8 @@ class Domain(Model):
 
     id = Column(Integer, primary_key=True)
 
-    mail_host = Column(Unicode)
-    description = Column(Unicode)
+    mail_host = Column(SAUnicode)
+    description = Column(SAUnicode)
     owners = relationship('User',
                           secondary='domain_owner',
                           backref='domains')

@@ -21,7 +21,7 @@ from mailman import public
 from mailman.core.constants import system_preferences
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import Enum, UUID
+from mailman.database.types import Enum, UUID, SAUnicode
 from mailman.interfaces.action import Action
 from mailman.interfaces.address import IAddress
 from mailman.interfaces.listmanager import IListManager
@@ -30,7 +30,7 @@ from mailman.interfaces.member import (
 from mailman.interfaces.user import IUser, UnverifiedAddressError
 from mailman.interfaces.usermanager import IUserManager
 from mailman.utilities.uid import UIDFactory
-from sqlalchemy import Column, ForeignKey, Integer, Unicode
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from zope.component import getUtility
 from zope.event import notify
@@ -50,7 +50,7 @@ class Member(Model):
     id = Column(Integer, primary_key=True)
     _member_id = Column(UUID)
     role = Column(Enum(MemberRole), index=True)
-    list_id = Column(Unicode, index=True)
+    list_id = Column(SAUnicode, index=True)
     moderation_action = Column(Enum(Action))
 
     address_id = Column(Integer, ForeignKey('address.id'), index=True)

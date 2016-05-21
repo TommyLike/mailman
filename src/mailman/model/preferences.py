@@ -20,11 +20,11 @@
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import Enum
+from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.languages import ILanguageManager
 from mailman.interfaces.member import DeliveryMode, DeliveryStatus
 from mailman.interfaces.preferences import IPreferences
-from sqlalchemy import Boolean, Column, Integer, Unicode
+from sqlalchemy import Boolean, Column, Integer
 from zope.component import getUtility
 from zope.interface import implementer
 
@@ -39,7 +39,7 @@ class Preferences(Model):
     id = Column(Integer, primary_key=True)
     acknowledge_posts = Column(Boolean)
     hide_address = Column(Boolean)
-    _preferred_language = Column('preferred_language', Unicode)
+    _preferred_language = Column('preferred_language', SAUnicode)
     receive_list_copy = Column(Boolean)
     receive_own_postings = Column(Boolean)
     delivery_mode = Column(Enum(DeliveryMode))
