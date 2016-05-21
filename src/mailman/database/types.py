@@ -21,8 +21,8 @@ import uuid
 
 from mailman import public
 from sqlalchemy import Integer
-from sqlalchemy.dialects import postgresql
-from sqlalchemy.types import CHAR, TypeDecorator
+from sqlalchemy.dialects import postgresql, mysql
+from sqlalchemy.types import CHAR, TypeDecorator, Unicode
 
 
 @public
@@ -80,3 +80,19 @@ class UUID(TypeDecorator):
             return value
         else:
             return uuid.UUID(value)
+
+@public
+class SAUnicode(TypeDecorator):
+    """Unicode datatype to support fixed length VARCHAR in mysql
+
+    Uses the default unicode for all the other dailects except mysql. In case of
+    Mysql returns the mysql.VARCHAR.
+    """
+
+    impl = Unicode
+
+    def load_dailect_impl(self, dailect):
+        if dailect.name == 'mysql':
+            return dailect.type_descrictor(mysql.VARCHAR(unicode=True))
+        else:
+            return self.impl
