@@ -103,7 +103,8 @@ class SABaseDatabase:
         # engines, and yes, we could have chmod'd the file after the fact, but
         # half dozen and all...
         self.url = url
-        self.engine = create_engine(url)
+        self.engine = create_engine(url,
+                                    isolation_level="READ UNCOMMITTED")
         session = sessionmaker(bind=self.engine)
         self.store = session()
         self.store.commit()

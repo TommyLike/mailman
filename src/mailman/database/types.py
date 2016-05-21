@@ -20,10 +20,12 @@
 import uuid
 
 from mailman import public
+from mailman.config import config
+from mailman.database.mysql import MySQLDatabase
 from sqlalchemy import Integer
 from sqlalchemy.dialects import postgresql, mysql
+from sqlalchemy.ext.compiler import compiles
 from sqlalchemy.types import CHAR, TypeDecorator, Unicode
-
 
 @public
 class Enum(TypeDecorator):
@@ -81,18 +83,21 @@ class UUID(TypeDecorator):
         else:
             return uuid.UUID(value)
 
+
 @public
 class SAUnicode(TypeDecorator):
     """Unicode datatype to support fixed length VARCHAR in mysql
 
-    Uses the default unicode for all the other dailects except mysql. In case of
-    Mysql returns the mysql.VARCHAR.
+    This type compiles to VARCHAR(255) in case of mysql and in case of other
+    dailects defaults to the Unicode type. This was just created so that I don't
+    alter the output of the default Unicode data type and it can still be used
+    if needed in the codebase.
     """
-
     impl = Unicode
 
-    def load_dailect_impl(self, dailect):
-        if dailect.name == 'mysql':
-            return dailect.type_descrictor(mysql.VARCHAR(unicode=True))
-        else:
-            return self.impl
+
+@compiles(SAUnicode, 'mysql')
+def compile_varchar(element, compiler, **kw):
+    return "VARCHAR(255)"
+
+    

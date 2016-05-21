@@ -24,4 +24,12 @@ from sqlalchemy import Integer
 
 class MySQLDatabase(SABaseDatabase):
     """Database class for Mysql."""
-    pass
+
+    def _post_reset(self, store):
+        """
+        Reset AUTO_INCREMENT counters for all the tables.
+        """
+        super()._post_reset(store)
+        tables = reversed(Model.metadata.sorted_tables)
+        for table in tables:
+            store.execute("ALTER TABLE {} AUTO_INCREMENT = 1;".format(table))
