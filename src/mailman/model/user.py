@@ -20,7 +20,7 @@
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import UUID
+from mailman.database.types import UUID, SAUnicode
 from mailman.interfaces.address import (
     AddressAlreadyLinkedError, AddressNotLinkedError)
 from mailman.interfaces.user import (
@@ -32,7 +32,7 @@ from mailman.model.roster import Memberships
 from mailman.utilities.datetime import factory as date_factory
 from mailman.utilities.uid import UIDFactory
 from sqlalchemy import (
-    Boolean, Column, DateTime, ForeignKey, Integer, Unicode)
+    Boolean, Column, DateTime, ForeignKey, Integer)
 from sqlalchemy.orm import backref, relationship
 from zope.event import notify
 from zope.interface import implementer
@@ -49,8 +49,8 @@ class User(Model):
     __tablename__ = 'user'
 
     id = Column(Integer, primary_key=True)
-    display_name = Column(Unicode)
-    _password = Column('password', Unicode)
+    display_name = Column(SAUnicode)
+    _password = Column('password', SAUnicode)
     _user_id = Column(UUID, index=True)
     _created_on = Column(DateTime)
     is_server_owner = Column(Boolean, default=False)

@@ -19,9 +19,9 @@
 
 from mailman import public
 from mailman.database.model import Model
-from mailman.database.types import Enum
+from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.mime import FilterType, IContentFilter
-from sqlalchemy import Column, ForeignKey, Integer, Unicode
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from zope.interface import implementer
 
@@ -39,7 +39,7 @@ class ContentFilter(Model):
     mailing_list = relationship('MailingList')
 
     filter_type = Column(Enum(FilterType))
-    filter_pattern = Column(Unicode)
+    filter_pattern = Column(SAUnicode)
 
     def __init__(self, mailing_list, filter_pattern, filter_type):
         self.mailing_list = mailing_list

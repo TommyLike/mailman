@@ -20,10 +20,11 @@
 from email.utils import formataddr
 from mailman import public
 from mailman.database.model import Model
+from mailman.database.types import SAUnicode
 from mailman.interfaces.address import (
     AddressVerificationEvent, IAddress, IEmailValidator)
 from mailman.utilities.datetime import now
-from sqlalchemy import Column, DateTime, ForeignKey, Integer, Unicode
+from sqlalchemy import Column, DateTime, ForeignKey, Integer
 from sqlalchemy.orm import backref, relationship
 from zope.component import getUtility
 from zope.event import notify
@@ -38,9 +39,9 @@ class Address(Model):
     __tablename__ = 'address'
 
     id = Column(Integer, primary_key=True)
-    email = Column(Unicode, index=True)
-    _original = Column(Unicode)
-    display_name = Column(Unicode)
+    email = Column(SAUnicode, index=True)
+    _original = Column(SAUnicode)
+    display_name = Column(SAUnicode)
     _verified_on = Column('verified_on', DateTime)
     registered_on = Column(DateTime)
 

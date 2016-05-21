@@ -20,8 +20,9 @@
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
+from mailman.database.types import SAUnicode
 from mailman.interfaces.workflow import IWorkflowState, IWorkflowStateManager
-from sqlalchemy import Column, Unicode
+from sqlalchemy import Column
 from zope.interface import implementer
 
 
@@ -32,10 +33,10 @@ class WorkflowState(Model):
 
     __tablename__ = 'workflowstate'
 
-    name = Column(Unicode, primary_key=True)
-    token = Column(Unicode, primary_key=True)
-    step = Column(Unicode)
-    data = Column(Unicode)
+    name = Column(SAUnicode, primary_key=True)
+    token = Column(SAUnicode, primary_key=True)
+    step = Column(SAUnicode)
+    data = Column(SAUnicode)
 
 
 @public

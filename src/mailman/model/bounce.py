@@ -20,7 +20,7 @@
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import Enum
+from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.bounce import (
     BounceContext, IBounceEvent, IBounceProcessor)
 from mailman.utilities.datetime import now
@@ -36,10 +36,10 @@ class BounceEvent(Model):
     __tablename__ = 'bounceevent'
 
     id = Column(Integer, primary_key=True)
-    list_id = Column(Unicode)
-    email = Column(Unicode)
+    list_id = Column(SAUnicode)
+    email = Column(SAUnicode)
     timestamp = Column(DateTime)
-    message_id = Column(Unicode)
+    message_id = Column(SAUnicode)
     context = Column(Enum(BounceContext))
     processed = Column(Boolean)
 

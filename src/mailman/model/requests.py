@@ -21,12 +21,12 @@ from datetime import timedelta
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import Enum
+from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.pending import IPendable, IPendings
 from mailman.interfaces.requests import IListRequests, RequestType
 from mailman.utilities.queries import QuerySequence
 from pickle import dumps, loads
-from sqlalchemy import Column, ForeignKey, Integer, Unicode
+from sqlalchemy import Column, ForeignKey, Integer
 from sqlalchemy.orm import relationship
 from zope.component import getUtility
 from zope.interface import implementer
@@ -42,7 +42,7 @@ class DataPendable(dict):
     def update(self, mapping):
         # Keys and values must be strings (unicodes, but bytes values are
         # accepted for now).  Any other types for keys are a programming
-        # error.  If we find a non-Unicode value, pickle it and encode it in
+        # error.  If we find a non-SAUnicode value, pickle it and encode it in
         # such a way that it will be properly reconstituted when unpended.
         clean_mapping = {}
         for key, value in mapping.items():
@@ -120,7 +120,7 @@ class ListRequests:
         if pendable is None:
             return None
         data = dict()
-        # Unpickle any non-Unicode values.
+        # Unpickle any non-SAUnicode values.
         for key, value in pendable.items():
             if key.startswith('_pck_'):
                 data[key[5:]] = loads(value.encode('raw-unicode-escape'))
@@ -146,9 +146,9 @@ class _Request(Model):
     __tablename__ = '_request'
 
     id = Column(Integer, primary_key=True)
-    key = Column(Unicode)
+    key = Column(SAUnicode)
     request_type = Column(Enum(RequestType))
-    data_hash = Column(Unicode)
+    data_hash = Column(SAUnicode)
 
     mailing_list_id = Column(Integer, ForeignKey('mailinglist.id'), index=True)
     mailing_list = relationship('MailingList')

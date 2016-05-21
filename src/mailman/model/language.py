@@ -19,8 +19,9 @@
 
 from mailman import public
 from mailman.database.model import Model
+from mailman.database.types import SAUnicode
 from mailman.interfaces.languages import ILanguage
-from sqlalchemy import Column, Integer, Unicode
+from sqlalchemy import Column, Integer
 from zope.interface import implementer
 
 
@@ -32,4 +33,4 @@ class Language(Model):
     __tablename__ = 'language'
 
     id = Column(Integer, primary_key=True)
-    code = Column(Unicode)
+    code = Column(SAUnicode)
