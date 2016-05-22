@@ -95,6 +95,9 @@ class SAUnicode(TypeDecorator):
     """
     impl = Unicode
 
+@compiles(SAUnicode)
+def default_sa_unicode(element, compiler, **kw):
+    return compiler.visit_Unicode(element, **kw)
 
 @compiles(SAUnicode, 'mysql')
 def compile_varchar(element, compiler, **kw):
@@ -113,3 +116,6 @@ class SAUnicodeLarge(TypeDecorator):
 def compile_varchar(element, compiler, **kw):
     return "VARCHAR(510)"
 
+@compiles(SAUnicode)
+def defalt_sa_unicode_large(element, compiler, **kw):
+    return compiler.visit_unicode(element, **kw)
