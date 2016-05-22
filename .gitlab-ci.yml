@@ -30,3 +30,11 @@ pgsql:
   - MAILMAN_EXTRA_TESTING_CFG=/home/runner/configs/postgres.cfg tox -e py34-pg,py35-pg
   tags:
   - postgres
+
+mysql:
+  services:
+  - mysql:latest
+  script:
+  - MAILMAN_EXTRA_TESTING_CFG=/home/runner/configs/mysql.cfg tox -e py34-mysql,py35-mysql
+  tags:
+  - mysql
