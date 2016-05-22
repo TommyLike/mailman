@@ -13,7 +13,7 @@ fallback to the list's default.
 import sqlalchemy as sa
 
 from alembic import op
-from mailman.database.types import Enum
+from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.action import Action
 from mailman.interfaces.member import MemberRole
 
@@ -26,7 +26,7 @@ down_revision = 'd4fbb4fd34ca'
 mailinglist_table = sa.sql.table(
     'mailinglist',
     sa.sql.column('id', sa.Integer),
-    sa.sql.column('list_id', sa.Unicode),
+    sa.sql.column('list_id', SAUnicode),
     sa.sql.column('default_member_action', Enum(Action)),
     sa.sql.column('default_nonmember_action', Enum(Action)),
     )
@@ -35,7 +35,7 @@ mailinglist_table = sa.sql.table(
 member_table = sa.sql.table(
     'member',
     sa.sql.column('id', sa.Integer),
-    sa.sql.column('list_id', sa.Unicode),
+    sa.sql.column('list_id', SAUnicode),
     sa.sql.column('role', Enum(MemberRole)),
     sa.sql.column('moderation_action', Enum(Action)),
     )

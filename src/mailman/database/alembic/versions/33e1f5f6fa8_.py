@@ -29,6 +29,7 @@ import sqlalchemy as sa
 
 from alembic import op
 from mailman.database.helpers import is_sqlite
+from mailman.database.types import SAUnicode
 
 
 # Revision identifiers, used by Alembic.
@@ -50,7 +51,7 @@ def upgrade():
         # SQLite does not support altering columns.
         return
     for table, column in COLUMNS_TO_CHANGE:
-        op.alter_column(table, column, type_=sa.Unicode)
+        op.alter_column(table, column, type_=SAUnicode)
 
 
 def downgrade():

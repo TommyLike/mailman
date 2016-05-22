@@ -14,6 +14,7 @@ import sqlalchemy as sa
 
 from alembic import op
 
+from mailman.database.types import SAUnicode
 
 # revision identifiers, used by Alembic.
 revision = '47294d3a604'
@@ -34,8 +35,8 @@ pended_table = sa.sql.table(
 keyvalue_table = sa.sql.table(
     'pendedkeyvalue',
     sa.sql.column('id', sa.Integer),
-    sa.sql.column('key', sa.Unicode),
-    sa.sql.column('value', sa.Unicode),
+    sa.sql.column('key', SAUnicode),
+    sa.sql.column('value', SAUnicode),
     sa.sql.column('pended_id', sa.Integer),
     )
 

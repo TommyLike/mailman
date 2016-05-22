@@ -20,7 +20,9 @@ down_revision = '47294d3a604'
 
 def upgrade():
     with op.batch_alter_table('mailinglist') as batch_op:
-        batch_op.alter_column('digestable', new_column_name='digests_enabled')
+        batch_op.alter_column('digestable', new_column_name='digests_enabled',
+                              existing_type=sa.Boolean)
+        # All column modifications require existing types for Mysql.
         batch_op.drop_column('nondigestable')
     # Non-database migration: rename the list's data-path.
     for dirname in os.listdir(config.LIST_DATA_DIR):
@@ -34,7 +36,9 @@ def upgrade():
 
 def downgrade():
     with op.batch_alter_table('mailinglist') as batch_op:
-        batch_op.alter_column('digests_enabled', new_column_name='digestable')
+        batch_op.alter_column('digests_enabled',
+                              new_column_name='digestable',
+                              existing_type=sa.Boolean)
         # The data for this column is lost, it's not used anyway.
         batch_op.add_column(sa.Column('nondigestable', sa.Boolean))
     for dirname in os.listdir(config.LIST_DATA_DIR):

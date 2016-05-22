@@ -57,7 +57,8 @@ def downgrade():
         op.drop_column('user', 'is_server_owner')
     if not exists_in_db(op.get_bind(), 'domain', 'contact_address'):
         # SQLite may not have removed it.
+        # Add a fixed length VARCHAR for MySQL.
         op.add_column(
             'domain',
-            sa.Column('contact_address', sa.VARCHAR(), nullable=True))
+            sa.Column('contact_address', sa.VARCHAR(255), nullable=True))
     op.drop_table('domain_owner')
