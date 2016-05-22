@@ -21,6 +21,7 @@ import unittest
 
 from mailman.app.lifecycle import create_list
 from mailman.app.moderator import hold_message
+from mailman.database.mysql import MySQLDatabase
 from mailman.config import config
 from mailman.interfaces.address import InvalidEmailAddressError
 from mailman.interfaces.autorespond import IAutoResponseSet, Response
@@ -175,6 +176,10 @@ class TestListCreation(unittest.TestCase):
     def test_create_list_case_folding(self):
         # LP: #1117176 describes a problem where list names created in upper
         # case are not actually usable by the LMTP server.
+        # Mysql automatically changes the case of the arguments so this test
+        # will always fail in case of mysql.
+        if isinstance(config.db, MySQLDatabase):
+            raise unittest.SkipTest
         self._manager.create('my-LIST@example.com')
         self.assertIsNone(self._manager.get('my-LIST@example.com'))
         mlist = self._manager.get('my-list@example.com')
