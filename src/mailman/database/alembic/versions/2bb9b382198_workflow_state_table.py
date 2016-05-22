@@ -7,8 +7,9 @@ Create Date: 2015-03-25 18:09:18.338790
 """
 
 import sqlalchemy as sa
-from mailman.database.types import SAUnicode
+
 from alembic import op
+from mailman.database.types import SAUnicode
 
 
 # Revision identifiers, used by Alembic.

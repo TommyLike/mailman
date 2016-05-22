@@ -23,10 +23,10 @@ import alembic.command
 from contextlib import suppress
 from mailman.config import config
 from mailman.database.alembic import alembic_cfg
-from mailman.database.types import SAUnicode
 from mailman.database.factory import LAST_STORM_SCHEMA_VERSION, SchemaManager
 from mailman.database.helpers import is_mysql
 from mailman.database.model import Model
+from mailman.database.types import SAUnicode
 from mailman.interfaces.database import DatabaseError
 from mailman.testing.layers import ConfigLayer
 from sqlalchemy import Column, Integer, MetaData, Table
@@ -93,9 +93,9 @@ class TestSchemaManager(unittest.TestCase):
             version = Model.metadata.tables['version']
             version.drop(config.db.engine, checkfirst=True)
             Model.metadata.remove(version)
-        # If it's nonexistent, PostgreSQL raises a ProgrammingError while SQLite
-        # raises an OperationalError. Since mysql automatically handles indexes
-        # for primary keys, don't try doing in case of mysql backend.
+        # If it's nonexistent, PostgreSQL raises a ProgrammingError while
+        # SQLite raises an OperationalError. Since mysql automatically handles
+        # indexes for primary keys, don't try doing in case of mysql backend.
         if not is_mysql(config.db.engine):
             with suppress(ProgrammingError, OperationalError):
                 Index('ix_user_user_id').drop(bind=config.db.engine)

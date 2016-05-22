@@ -20,8 +20,8 @@ def upgrade():
                     'address', ['email'],
                     unique=False)
 
-    # Mysql automatically creates the indexes for primary keys so don't need to do
-    # it explicitly again.
+    # Mysql automatically creates the indexes for primary keys so don't need to
+    # do it explicitly again.
     if not is_mysql(op.get_bind()):
         op.create_index(op.f('ix_member_address_id'),
                         'member', ['address_id'],

@@ -20,7 +20,7 @@
 from mailman import public
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import UUID, SAUnicode
+from mailman.database.types import SAUnicode, UUID
 from mailman.interfaces.address import (
     AddressAlreadyLinkedError, AddressNotLinkedError)
 from mailman.interfaces.user import (

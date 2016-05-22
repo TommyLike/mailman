@@ -21,7 +21,7 @@ from mailman import public
 from mailman.core.constants import system_preferences
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
-from mailman.database.types import Enum, UUID, SAUnicode
+from mailman.database.types import Enum, SAUnicode, UUID
 from mailman.interfaces.action import Action
 from mailman.interfaces.address import IAddress
 from mailman.interfaces.listmanager import IListManager

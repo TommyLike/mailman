@@ -24,7 +24,7 @@ from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.bounce import (
     BounceContext, IBounceEvent, IBounceProcessor)
 from mailman.utilities.datetime import now
-from sqlalchemy import Boolean, Column, DateTime, Integer, Unicode
+from sqlalchemy import Boolean, Column, DateTime, Integer
 from zope.interface import implementer
 
 
