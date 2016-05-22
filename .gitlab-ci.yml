@@ -33,7 +33,7 @@ pgsql:
 
 mysql:
   services:
-  - mysql:latest
+  - maxking/mysql:latest
   script:
   - MAILMAN_EXTRA_TESTING_CFG=/home/runner/configs/mysql.cfg tox -e py34-mysql,py35-mysql
   tags:
