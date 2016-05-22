@@ -7,7 +7,7 @@ Create Date: 2015-03-25 18:09:18.338790
 """
 
 import sqlalchemy as sa
-
+from mailman.database.types import SAUnicode
 from alembic import op
 
 
@@ -19,10 +19,10 @@ down_revision = '16c2b25c7b'
 def upgrade():
     op.create_table(
         'workflowstate',
-        sa.Column('name', sa.Unicode(), nullable=False),
-        sa.Column('token', sa.Unicode(), nullable=False),
-        sa.Column('step', sa.Unicode(), nullable=True),
-        sa.Column('data', sa.Unicode(), nullable=True),
+        sa.Column('name', SAUnicode(), nullable=False),
+        sa.Column('token', SAUnicode(), nullable=False),
+        sa.Column('step', SAUnicode(), nullable=True),
+        sa.Column('data', SAUnicode(), nullable=True),
         sa.PrimaryKeyConstraint('name', 'token')
         )
 

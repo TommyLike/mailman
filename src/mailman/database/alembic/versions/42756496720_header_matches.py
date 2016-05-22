@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 from alembic import op
 from mailman.database.helpers import exists_in_db, is_sqlite
-
+from mailman.database.types import SAUnicode
 
 # Revision identifiers, used by Alembic.
 revision = '42756496720'
@@ -23,9 +23,9 @@ def upgrade():
         'headermatch',
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('mailing_list_id', sa.Integer(), nullable=True),
-        sa.Column('header', sa.Unicode(), nullable=False),
-        sa.Column('pattern', sa.Unicode(), nullable=False),
-        sa.Column('chain', sa.Unicode(), nullable=True),
+        sa.Column('header', SAUnicode(), nullable=False),
+        sa.Column('pattern', SAUnicode(), nullable=False),
+        sa.Column('chain', SAUnicode(), nullable=True),
         sa.ForeignKeyConstraint(['mailing_list_id'], ['mailinglist.id'], ),
         sa.PrimaryKeyConstraint('id')
         )
@@ -73,8 +73,8 @@ def downgrade():
     header_match_table = sa.sql.table(
         'headermatch',
         sa.sql.column('mailing_list_id', sa.Integer),
-        sa.sql.column('header', sa.Unicode),
-        sa.sql.column('pattern', sa.Unicode),
+        sa.sql.column('header', SAUnicode),
+        sa.sql.column('pattern', SAUnicode),
         )
     for mlist_id, header, pattern in connection.execute(
             header_match_table.select()).fetchall():
