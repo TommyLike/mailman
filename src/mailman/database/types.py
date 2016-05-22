@@ -100,4 +100,16 @@ class SAUnicode(TypeDecorator):
 def compile_varchar(element, compiler, **kw):
     return "VARCHAR(255)"
 
-    
+
+@public
+class SAUnicodeLarge(TypeDecorator):
+    """Similar to SAUnicode type, but compiles to VARCHAR(510), double size of
+    SAUnicode defined above.
+    """
+    impl = Unicode
+
+
+@compiles(SAUnicodeLarge, 'mysql')
+def compile_varchar(element, compiler, **kw):
+    return "VARCHAR(510)"
+
