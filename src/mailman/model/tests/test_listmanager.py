@@ -21,8 +21,8 @@ import unittest
 
 from mailman.app.lifecycle import create_list
 from mailman.app.moderator import hold_message
-from mailman.database.mysql import MySQLDatabase
 from mailman.config import config
+from mailman.database.mysql import MySQLDatabase
 from mailman.interfaces.address import InvalidEmailAddressError
 from mailman.interfaces.autorespond import IAutoResponseSet, Response
 from mailman.interfaces.listmanager import (
