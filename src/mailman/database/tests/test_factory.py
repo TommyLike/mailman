@@ -23,11 +23,13 @@ import alembic.command
 from contextlib import suppress
 from mailman.config import config
 from mailman.database.alembic import alembic_cfg
+from mailman.database.types import SAUnicode
 from mailman.database.factory import LAST_STORM_SCHEMA_VERSION, SchemaManager
+from mailman.database.helpers import is_mysql
 from mailman.database.model import Model
 from mailman.interfaces.database import DatabaseError
 from mailman.testing.layers import ConfigLayer
-from sqlalchemy import Column, Integer, MetaData, Table, Unicode
+from sqlalchemy import Column, Integer, MetaData, Table
 from sqlalchemy.exc import OperationalError, ProgrammingError
 from sqlalchemy.schema import Index
 from unittest.mock import patch
@@ -60,8 +62,8 @@ class TestSchemaManager(unittest.TestCase):
         version_table = Table(
             'version', Model.metadata,
             Column('id', Integer, primary_key=True),
-            Column('component', Unicode),
-            Column('version', Unicode),
+            Column('component', SAUnicode),
+            Column('version', SAUnicode),
             )
         version_table.create(config.db.engine)
         config.db.store.execute(version_table.insert().values(
@@ -71,12 +73,15 @@ class TestSchemaManager(unittest.TestCase):
         # all DB engines...
         config.db.engine.execute(
             'ALTER TABLE mailinglist ADD COLUMN acceptable_aliases_id INT')
-        Index('ix_user__user_id').drop(bind=config.db.engine)
-        # Don't pollute our main metadata object, create a new one.
-        md = MetaData()
-        user_table = Model.metadata.tables['user'].tometadata(md)
-        Index('ix_user_user_id', user_table.c._user_id).create(
-            bind=config.db.engine)
+        # In case of mysql you cannot create/drop indexes on primary keys
+        # manually as it is handled automatically by mysql.
+        if not is_mysql(config.db.engine):
+            Index('ix_user__user_id').drop(bind=config.db.engine)
+            # Don't pollute our main metadata object, create a new one.
+            md = MetaData()
+            user_table = Model.metadata.tables['user'].tometadata(md)
+            Index('ix_user_user_id', user_table.c._user_id).create(
+                bind=config.db.engine)
         config.db.commit()
 
     def _drop_storm_database(self):
@@ -88,10 +93,12 @@ class TestSchemaManager(unittest.TestCase):
             version = Model.metadata.tables['version']
             version.drop(config.db.engine, checkfirst=True)
             Model.metadata.remove(version)
-        # If it's nonexistent, PostgreSQL raises a ProgrammingError, while
-        # SQLite raises an OperationalError.
-        with suppress(ProgrammingError, OperationalError):
-            Index('ix_user_user_id').drop(bind=config.db.engine)
+        # If it's nonexistent, PostgreSQL raises a ProgrammingError while SQLite
+        # raises an OperationalError. Since mysql automatically handles indexes
+        # for primary keys, don't try doing in case of mysql backend.
+        if not is_mysql(config.db.engine):
+            with suppress(ProgrammingError, OperationalError):
+                Index('ix_user_user_id').drop(bind=config.db.engine)
         config.db.commit()
 
     def test_current_database(self):
