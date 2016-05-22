@@ -28,7 +28,7 @@ from mailman.database.alembic import alembic_cfg
 from mailman.database.helpers import exists_in_db
 from mailman.database.model import Model
 from mailman.database.transaction import transaction
-from mailman.database.types import Enum
+from mailman.database.types import Enum, SAUnicode
 from mailman.interfaces.action import Action
 from mailman.interfaces.cache import ICacheManager
 from mailman.interfaces.member import MemberRole
@@ -83,8 +83,8 @@ class TestMigrations(unittest.TestCase):
         header_match_table = sa.sql.table(
             'headermatch',
             sa.sql.column('mailing_list_id', sa.Integer),
-            sa.sql.column('header', sa.Unicode),
-            sa.sql.column('pattern', sa.Unicode),
+            sa.sql.column('header', SAUnicode),
+            sa.sql.column('pattern', SAUnicode),
             )
         # Bring the DB to the revision that is being tested.
         alembic.command.downgrade(alembic_cfg, '42756496720')
@@ -126,8 +126,8 @@ class TestMigrations(unittest.TestCase):
         keyvalue_table = sa.sql.table(
             'pendedkeyvalue',
             sa.sql.column('id', sa.Integer),
-            sa.sql.column('key', sa.Unicode),
-            sa.sql.column('value', sa.Unicode),
+            sa.sql.column('key', SAUnicode),
+            sa.sql.column('value', SAUnicode),
             sa.sql.column('pended_id', sa.Integer),
             )
         def get_from_db():                                 # noqa
@@ -230,14 +230,14 @@ class TestMigrations(unittest.TestCase):
         mailinglist_table = sa.sql.table(           # noqa
             'mailinglist',
             sa.sql.column('id', sa.Integer),
-            sa.sql.column('list_id', sa.Unicode),
+            sa.sql.column('list_id', SAUnicode),
             sa.sql.column('default_member_action', Enum(Action)),
             sa.sql.column('default_nonmember_action', Enum(Action)),
             )
         member_table = sa.sql.table(
             'member',
             sa.sql.column('id', sa.Integer),
-            sa.sql.column('list_id', sa.Unicode),
+            sa.sql.column('list_id', SAUnicode),
             sa.sql.column('address_id', sa.Integer),
             sa.sql.column('role', Enum(MemberRole)),
             sa.sql.column('moderation_action', Enum(Action)),
