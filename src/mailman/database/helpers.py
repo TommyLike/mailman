@@ -26,6 +26,9 @@ from mailman import public
 def is_sqlite(bind):
     return bind.dialect.name == 'sqlite'
 
+@public
+def is_mysql(bind):
+    return bind.dialect.name == 'mysql'
 
 @public
 def exists_in_db(bind, tablename, columnname=None):
