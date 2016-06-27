@@ -6,6 +6,8 @@ WORKDIR /opt/mailman/
 
 RUN python setup.py develop
 
-RUN mailman start
+RUN mailman -C mailman-testing.cfg start
+
+EXPOSE 9001
 
 CMD ["tail", "-f", "/dev/null"]
