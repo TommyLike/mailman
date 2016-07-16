@@ -73,8 +73,8 @@ class TestSchemaManager(unittest.TestCase):
         # all DB engines...
         config.db.engine.execute(
             'ALTER TABLE mailinglist ADD COLUMN acceptable_aliases_id INT')
-        # In case of mysql you cannot create/drop indexes on primary keys
-        # manually as it is handled automatically by mysql.
+        # In case of MySQL, you cannot create/drop indexes on primary keys
+        # manually as it is handled automatically by MySQL.
         if not is_mysql(config.db.engine):
             Index('ix_user__user_id').drop(bind=config.db.engine)
             # Don't pollute our main metadata object, create a new one.
@@ -94,8 +94,8 @@ class TestSchemaManager(unittest.TestCase):
             version.drop(config.db.engine, checkfirst=True)
             Model.metadata.remove(version)
         # If it's nonexistent, PostgreSQL raises a ProgrammingError while
-        # SQLite raises an OperationalError. Since mysql automatically handles
-        # indexes for primary keys, don't try doing in case of mysql backend.
+        # SQLite raises an OperationalError. Since MySQL automatically handles
+        # indexes for primary keys, don't try doing it with that backend.
         if not is_mysql(config.db.engine):
             with suppress(ProgrammingError, OperationalError):
                 Index('ix_user_user_id').drop(bind=config.db.engine)

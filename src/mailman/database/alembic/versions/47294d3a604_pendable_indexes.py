@@ -13,8 +13,8 @@ import json
 import sqlalchemy as sa
 
 from alembic import op
-
 from mailman.database.types import SAUnicode
+
 
 # revision identifiers, used by Alembic.
 revision = '47294d3a604'

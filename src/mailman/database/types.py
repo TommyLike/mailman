@@ -85,12 +85,12 @@ class UUID(TypeDecorator):
 
 @public
 class SAUnicode(TypeDecorator):
-    """Unicode datatype to support fixed length VARCHAR in mysql
+    """Unicode datatype to support fixed length VARCHAR in MySQL.
 
-    This type compiles to VARCHAR(255) in case of mysql and in case of other
-    dailects defaults to the Unicode type. This was just created so that I
-    don't alter the output of the default Unicode data type and it can still be
-    used if needed in the codebase.
+    This type compiles to VARCHAR(255) in case of MySQL, and in case of
+    other dailects defaults to the Unicode type.  This was created so
+    that we don't have to alter the output of the default Unicode data
+    type and it can still be used if needed in the codebase.
     """
     impl = Unicode
 
@@ -102,7 +102,7 @@ def default_sa_unicode(element, compiler, **kw):
 
 @compiles(SAUnicode, 'mysql')
 def compile_sa_unicode(element, compiler, **kw):
-    return "VARCHAR(255)"
+    return 'VARCHAR(255)'
 
 
 @public
@@ -115,7 +115,7 @@ class SAUnicodeLarge(TypeDecorator):
 
 @compiles(SAUnicodeLarge, 'mysql')
 def compile_sa_unicode_large(element, compiler, **kw):
-    return "VARCHAR(510)"
+    return 'VARCHAR(510)'
 
 
 @compiles(SAUnicode)

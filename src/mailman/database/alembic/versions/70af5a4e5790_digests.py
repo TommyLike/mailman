@@ -20,7 +20,8 @@ down_revision = '47294d3a604'
 
 def upgrade():
     with op.batch_alter_table('mailinglist') as batch_op:
-        batch_op.alter_column('digestable', new_column_name='digests_enabled',
+        batch_op.alter_column('digestable',
+                              new_column_name='digests_enabled',
                               existing_type=sa.Boolean)
         # All column modifications require existing types for Mysql.
         batch_op.drop_column('nondigestable')

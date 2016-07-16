@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License along with
 # GNU Mailman.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Mysql database support"""
+"""MySQL database support"""
 
 from mailman import public
 from mailman.database.base import SABaseDatabase
@@ -27,9 +27,7 @@ class MySQLDatabase(SABaseDatabase):
     """Database class for Mysql."""
 
     def _post_reset(self, store):
-        """
-        Reset AUTO_INCREMENT counters for all the tables.
-        """
+        """Reset AUTO_INCREMENT counters for all the tables."""
         super()._post_reset(store)
         tables = reversed(Model.metadata.sorted_tables)
         for table in tables:
