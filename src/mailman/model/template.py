@@ -23,6 +23,7 @@ from mailman import public
 from mailman.config import config
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
+from mailman.database.types import SAUnicode
 from mailman.interfaces.cache import ICacheManager
 from mailman.interfaces.domain import IDomain
 from mailman.interfaces.mailinglist import IMailingList
@@ -32,7 +33,7 @@ from mailman.utilities import protocols
 from mailman.utilities.i18n import find
 from mailman.utilities.string import expand
 from requests import HTTPError
-from sqlalchemy import Column, Integer, Unicode
+from sqlalchemy import Column, Integer
 from urllib.error import URLError
 from urllib.parse import urlparse
 from zope.component import getUtility
@@ -47,11 +48,11 @@ class Template(Model):
     __tablename__ = 'template'
 
     id = Column(Integer, primary_key=True)
-    name = Column(Unicode)
-    context = Column(Unicode)
-    uri = Column(Unicode)
-    username = Column(Unicode, nullable=True)
-    password = Column(Unicode, nullable=True)
+    name = Column(SAUnicode)
+    context = Column(SAUnicode)
+    uri = Column(SAUnicode)
+    username = Column(SAUnicode, nullable=True)
+    password = Column(SAUnicode, nullable=True)
 
     def __init__(self, name, context, uri, username, password):
         self.name = name

@@ -26,9 +26,10 @@ from mailman import public
 from mailman.config import config
 from mailman.database.model import Model
 from mailman.database.transaction import dbconnection
+from mailman.database.types import SAUnicode
 from mailman.interfaces.cache import ICacheManager
 from mailman.utilities.datetime import now
-from sqlalchemy import Boolean, Column, DateTime, Integer, Unicode
+from sqlalchemy import Boolean, Column, DateTime, Integer
 from zope.interface import implementer
 
 
@@ -36,8 +37,8 @@ class CacheEntry(Model):
     __tablename__ = 'file_cache'
 
     id = Column(Integer, primary_key=True)
-    key = Column(Unicode)
-    file_id = Column(Unicode)
+    key = Column(SAUnicode)
+    file_id = Column(SAUnicode)
     is_bytes = Column(Boolean)
     created_on = Column(DateTime)
     expires_on = Column(DateTime)
