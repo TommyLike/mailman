@@ -12,6 +12,7 @@ import sqlalchemy as sa
 from alembic import op
 from mailman.config import config
 from mailman.database.helpers import exists_in_db
+from mailman.database.types import SAUnicode
 
 
 # revision identifiers, used by Alembic.
@@ -35,8 +36,8 @@ def upgrade():
     op.create_table(
         'file_cache',
         sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('key', sa.Unicode(), nullable=False),
-        sa.Column('file_id', sa.Unicode(), nullable=True),
+        sa.Column('key', SAUnicode(), nullable=False),
+        sa.Column('file_id', SAUnicode(), nullable=True),
         sa.Column('is_bytes', sa.Boolean(), nullable=False),
         sa.Column('created_on', sa.DateTime(), nullable=False),
         sa.Column('expires_on', sa.DateTime(), nullable=False),
@@ -45,10 +46,10 @@ def upgrade():
     template_table = op.create_table(
         'template',
         sa.Column('id', sa.Integer(), nullable=False),
-        sa.Column('name', sa.Unicode(), nullable=False),
-        sa.Column('context', sa.Unicode(), nullable=True),
-        sa.Column('uri', sa.Unicode(), nullable=False),
-        sa.Column('username', sa.Unicode(), nullable=True),
+        sa.Column('name', SAUnicode(), nullable=False),
+        sa.Column('context', SAUnicode(), nullable=True),
+        sa.Column('uri', SAUnicode(), nullable=False),
+        sa.Column('username', SAUnicode(), nullable=True),
         sa.Column('password', sa.DateTime(), nullable=True),
         sa.PrimaryKeyConstraint('id')
         )
@@ -60,13 +61,13 @@ def upgrade():
     mlist_table = sa.sql.table(
         'mailinglist',
         sa.sql.column('id', sa.Integer),
-        sa.sql.column('list_id', sa.Unicode),
-        sa.sql.column('digest_footer_uri', sa.Unicode),
-        sa.sql.column('digest_header_uri', sa.Unicode),
-        sa.sql.column('footer_uri', sa.Unicode),
-        sa.sql.column('header_uri', sa.Unicode),
-        sa.sql.column('goodbye_message_uri', sa.Unicode),
-        sa.sql.column('welcome_message_uri', sa.Unicode),
+        sa.sql.column('list_id', SAUnicode),
+        sa.sql.column('digest_footer_uri', SAUnicode),
+        sa.sql.column('digest_header_uri', SAUnicode),
+        sa.sql.column('footer_uri', SAUnicode),
+        sa.sql.column('header_uri', SAUnicode),
+        sa.sql.column('goodbye_message_uri', SAUnicode),
+        sa.sql.column('welcome_message_uri', SAUnicode),
         )
     for (mlist_id, list_id,
          digest_footer_uri, digest_header_uri,
@@ -131,30 +132,30 @@ def downgrade():
         if not exists_in_db(op.get_bind(), 'mailinglist', column):
             op.add_column(
                 'mailinglist',
-                sa.Column(column, sa.Unicode, nullable=True))
-    op.add_column('domain', sa.Column('base_url', sa.Unicode))
+                sa.Column(column, SAUnicode, nullable=True))
+    op.add_column('domain', sa.Column('base_url', SAUnicode))
     # Put all the templates with a context mapping the list-id back into the
     # mailinglist table.  No other contexts are supported, so just throw those
     # away.
     template_table = sa.sql.table(
         'template',
         sa.sql.column('id', sa.Integer),
-        sa.sql.column('name', sa.Unicode),
-        sa.sql.column('context', sa.Unicode),
-        sa.sql.column('uri', sa.Unicode),
-        sa.sql.column('username', sa.Unicode),
-        sa.sql.column('password', sa.Unicode),
+        sa.sql.column('name', SAUnicode),
+        sa.sql.column('context', SAUnicode),
+        sa.sql.column('uri', SAUnicode),
+        sa.sql.column('username', SAUnicode),
+        sa.sql.column('password', SAUnicode),
         )
     mlist_table = sa.sql.table(
         'mailinglist',
         sa.sql.column('id', sa.Integer),
-        sa.sql.column('list_id', sa.Unicode),
-        sa.sql.column('digest_footer_uri', sa.Unicode),
-        sa.sql.column('digest_header_uri', sa.Unicode),
-        sa.sql.column('footer_uri', sa.Unicode),
-        sa.sql.column('header_uri', sa.Unicode),
-        sa.sql.column('goodbye_message_uri', sa.Unicode),
-        sa.sql.column('welcome_message_uri', sa.Unicode),
+        sa.sql.column('list_id', SAUnicode),
+        sa.sql.column('digest_footer_uri', SAUnicode),
+        sa.sql.column('digest_header_uri', SAUnicode),
+        sa.sql.column('footer_uri', SAUnicode),
+        sa.sql.column('header_uri', SAUnicode),
+        sa.sql.column('goodbye_message_uri', SAUnicode),
+        sa.sql.column('welcome_message_uri', SAUnicode),
         )
     connection = op.get_bind()
     for (table_id, name, context, uri, username, password
