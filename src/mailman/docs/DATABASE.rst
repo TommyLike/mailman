@@ -7,11 +7,11 @@ relational database.  By default, Mailman uses Python's built-in SQLite3_
 database, however, SQLAlchemy is compatible with PostgreSQL_ and MySQL, among
 possibly others.
 
-Currently, Mailman is known to work with the default SQLite3, PostgreSQL and
-MySQL databases.  (Volunteers to port it to other databases are welcome!).  If
-you want to use SQLite3, you generally don't need to change anything, but if you
-want Mailman to use PostgreSQL or MySQL, you'll need to set those up first, and
-then change a configuration variable in your ``/etc/mailman.cfg`` file.
+Currently, Mailman is known to work with the SQLite3, PostgreSQL, and MySQL
+databases.  (Volunteers to port it to other databases are welcome!).  If you
+want to use SQLite3, you generally don't need to change anything, but if you
+want Mailman to use PostgreSQL or MySQL, you'll need to set those up first,
+and then change a configuration variable in your ``/etc/mailman.cfg`` file.
 
 Two configuration variables control which database Mailman uses.  The first
 names the class implementing the database interface.  The second names the URL
@@ -62,21 +62,22 @@ it::
 
 My thanks to Stephen A. Goss for his contribution of PostgreSQL support.
 
+
 MySQL
 =====
 
-First, you need to configure MySQL itself. Lets say you create the `mailman`
+First, you need to configure MySQL itself.  Lets say you create the `mailman`
 database in MySQL via::
 
     mysql> CREATE DATABASE mailman;
 
-For some cases in out test suite we require the default collation of the
-database to be set to `utf8_unicode_ci`. You can change it via MySQL commandline
+In some cases, our test suite requires the default collation of the database
+to be set to `utf8_unicode_ci`.  You can change it via the MySQL command line
 like this::
 
     mysql> ALTER DATABASE mailman DEFAULT COLLATE utf8_unicode_ci;
 
-You would also need the python driver `pymysql` for MySQL.::
+You would also need the Python driver `pymysql` for MySQL.::
 
     $ pip install pymysql
 
@@ -88,14 +89,14 @@ You would then need to set both the `class` and `url` variables in
     url: mysql+pymysql://myuser:mypassword@mymysqlhost/mailman?charset=utf8&use_unicode=1
 
 The last part of the url specifies the charset that client expects from the
-server and to use the unicode via the flag `use_unicode`. You can find more
-about these options on the `SQLAlchemy's MySQL page`_.
+server and to use Unicode via the flag `use_unicode`.  You can find more about
+these options on the `SQLAlchemy's MySQL page`_.
 
 If you have any problems, you may need to delete the database and re-create
 it::
 
     mysql> DROP DATABASE mailman;
-	mysql> CREATE DATABASE mailman;
+    mysql> CREATE DATABASE mailman;
 
 
 Database Migrations

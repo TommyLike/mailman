@@ -175,9 +175,9 @@ class TestListCreation(unittest.TestCase):
 
     def test_create_list_case_folding(self):
         # LP: #1117176 describes a problem where list names created in upper
-        # case are not actually usable by the LMTP server.
-        # Mysql automatically changes the case of the arguments so this test
-        # will always fail in case of mysql.
+        # case are not actually usable by the LMTP server.  MySQL
+        # automatically changes the case of the arguments so this test will
+        # always fail in case of MySQL.
         if isinstance(config.db, MySQLDatabase):
             raise unittest.SkipTest
         self._manager.create('my-LIST@example.com')

@@ -118,7 +118,7 @@ class MailingList(Model):
     convert_html_to_plaintext = Column(Boolean)
     # Bounces.
     bounce_info_stale_after = Column(Interval)                   # XXX
-    bounce_matching_headers = Column(SAUnicode)                    # XXX
+    bounce_matching_headers = Column(SAUnicode)                  # XXX
     bounce_notify_owner_on_disable = Column(Boolean)             # XXX
     bounce_notify_owner_on_removal = Column(Boolean)             # XXX
     bounce_score_threshold = Column(Integer)                     # XXX
