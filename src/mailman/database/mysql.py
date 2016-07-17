@@ -24,11 +24,11 @@ from mailman.database.model import Model
 
 @public
 class MySQLDatabase(SABaseDatabase):
-    """Database class for Mysql."""
+    """Database class for MySQL."""
 
     def _post_reset(self, store):
         """Reset AUTO_INCREMENT counters for all the tables."""
         super()._post_reset(store)
         tables = reversed(Model.metadata.sorted_tables)
         for table in tables:
-            store.execute("ALTER TABLE {} AUTO_INCREMENT = 1;".format(table))
+            store.execute('ALTER TABLE {} AUTO_INCREMENT = 1;'.format(table))

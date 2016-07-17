@@ -107,8 +107,9 @@ def compile_sa_unicode(element, compiler, **kw):
 
 @public
 class SAUnicodeLarge(TypeDecorator):
-    """Similar to SAUnicode type, but compiles to VARCHAR(510), double size of
-    SAUnicode defined above.
+    """Similar to SAUnicode type, but compiles to VARCHAR(510).
+
+    This is double size of SAUnicode defined above.
     """
     impl = Unicode
 

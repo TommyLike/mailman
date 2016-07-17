@@ -65,7 +65,7 @@ class Pended(Model):
     id = Column(Integer, primary_key=True)
     token = Column(SAUnicode, index=True)
     expiration_date = Column(DateTime, index=True)
-    key_values = relationship('PendedKeyValue', cascade="all, delete-orphan")
+    key_values = relationship('PendedKeyValue', cascade='all, delete-orphan')
 
 
 @public
