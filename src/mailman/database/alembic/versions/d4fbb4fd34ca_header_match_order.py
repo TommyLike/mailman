@@ -21,25 +21,28 @@ def upgrade():
     with op.batch_alter_table('headermatch') as batch_op:
         batch_op.add_column(
             sa.Column('position', sa.Integer(), nullable=True))
-        batch_op.alter_column(
-            'mailing_list_id', existing_type=sa.INTEGER(), nullable=False)
         batch_op.create_index(
             op.f('ix_headermatch_position'), ['position'], unique=False)
-        # MySQL automatically creates indexes for primary keys.
         if not is_mysql(op.get_bind()):
+            # MySQL automatically creates indexes for primary keys.
             batch_op.create_index(
                 op.f('ix_headermatch_mailing_list_id'), ['mailing_list_id'],
                 unique=False)
+            # MySQL doesn't allow changing columns used as foreign_keys.
+            batch_op.alter_column(
+                'mailing_list_id', existing_type=sa.INTEGER(), nullable=False)
 
 
 def downgrade():
     with op.batch_alter_table('headermatch') as batch_op:
         batch_op.drop_index(op.f('ix_headermatch_position'))
-        batch_op.alter_column(
-            'mailing_list_id', existing_type=sa.INTEGER(), nullable=True)
         batch_op.drop_column('position')
-        # MySQL automatically creates and removes the indexes for primary
-        # keys.  So, you cannot drop it without removing the foreign key
-        # constraint.
+
         if not is_mysql(op.get_bind()):
+            # MySQL automatically creates and removes the indexes for primary
+            # keys.  So, you cannot drop it without removing the foreign key
+            # constraint.
             batch_op.drop_index(op.f('ix_headermatch_mailing_list_id'))
+            # MySQL doesn't allow changing columns used as foreign_keys.
+            batch_op.alter_column(
+                'mailing_list_id', existing_type=sa.INTEGER(), nullable=True)

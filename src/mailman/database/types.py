@@ -102,7 +102,8 @@ def default_sa_unicode(element, compiler, **kw):
 
 @compiles(SAUnicode, 'mysql')
 def compile_sa_unicode(element, compiler, **kw):
-    return 'VARCHAR(255)'
+    # We hardcode the collate here to make the string comparison case sensitive.
+    return 'VARCHAR(255) COLLATE utf8_bin'
 
 
 @public
@@ -116,7 +117,8 @@ class SAUnicodeLarge(TypeDecorator):
 
 @compiles(SAUnicodeLarge, 'mysql')
 def compile_sa_unicode_large(element, compiler, **kw):
-    return 'VARCHAR(510)'
+    # We hardcode the collate here to make the string comparison case sensitive.
+    return 'VARCHAR(510) COLLATE utf8_bin'
 
 
 @compiles(SAUnicode)
