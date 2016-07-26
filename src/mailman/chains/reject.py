@@ -66,7 +66,7 @@ The original message as received by Mailman is attached.
 """).format(
     list_name=mlist.display_name,                   # noqa
     reasons=NEWLINE.join(reasons)                   # noqa
-    ))
+    ))                                              # noqa
         bounce_message(mlist, msg, error)
         log.info('REJECT: %s', msg.get('message-id', 'n/a'))
         notify(RejectEvent(mlist, msg, msgdata, self))
