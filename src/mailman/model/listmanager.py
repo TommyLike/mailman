@@ -22,6 +22,7 @@ from mailman.interfaces.address import InvalidEmailAddressError
 from mailman.interfaces.listmanager import (
     IListManager, ListAlreadyExistsError, ListCreatedEvent, ListCreatingEvent,
     ListDeletedEvent, ListDeletingEvent)
+from mailman.interfaces.requests import IListRequests
 from mailman.model.autorespond import AutoResponseRecord
 from mailman.model.bans import Ban
 from mailman.model.mailinglist import (
@@ -76,6 +77,7 @@ class ListManager:
         notify(ListDeletingEvent(mlist))
         # First delete information associated with the mailing list.
         IAcceptableAliasSet(mlist).clear()
+        IListRequests(mlist).clear()
         store.query(AutoResponseRecord).filter_by(mailing_list=mlist).delete()
         store.query(ContentFilter).filter_by(mailing_list=mlist).delete()
         store.query(ListArchiver).filter_by(mailing_list=mlist).delete()
